@@ -1,11 +1,7 @@
 """
 urllib3 - Thread-safe connection pooling and re-using.
 """
-
-__author__ = 'Andrey Petrov (andrey.petrov@shazow.net)'
-__license__ = 'MIT'
-__version__ = 'dev'
-
+import warnings
 
 from .connectionpool import (
     HTTPConnectionPool,
@@ -32,7 +28,12 @@ except ImportError:
         def emit(self, record):
             pass
 
+__author__ = 'Andrey Petrov (andrey.petrov@shazow.net)'
+__license__ = 'MIT'
+__version__ = 'dev'
+
 logging.getLogger(__name__).addHandler(NullHandler())
+
 
 def add_stderr_logger(level=logging.DEBUG):
     """
@@ -55,7 +56,6 @@ def add_stderr_logger(level=logging.DEBUG):
 del NullHandler
 
 
-import warnings
 # SecurityWarning's always go off by default.
 warnings.simplefilter('always', exceptions.SecurityWarning, append=True)
 # SubjectAltNameWarning's should go off once per host
@@ -63,6 +63,7 @@ warnings.simplefilter('default', exceptions.SubjectAltNameWarning)
 # InsecurePlatformWarning's don't vary between requests, so we keep it default.
 warnings.simplefilter('default', exceptions.InsecurePlatformWarning,
                       append=True)
+
 
 def disable_warnings(category=exceptions.HTTPWarning):
     """

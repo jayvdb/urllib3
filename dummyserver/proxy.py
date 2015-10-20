@@ -45,13 +45,14 @@ class ProxyHandler(tornado.web.RequestHandler):
 
         def handle_response(response):
             if response.error and not isinstance(response.error,
-                    tornado.httpclient.HTTPError):
+                                                 tornado.httpclient.HTTPError):
                 self.set_status(500)
                 self.write('Internal server error:\n' + str(response.error))
                 self.finish()
             else:
                 self.set_status(response.code)
-                for header in ('Date', 'Cache-Control', 'Server',
+                for header in (
+                        'Date', 'Cache-Control', 'Server',
                         'Content-Type', 'Location'):
                     v = response.headers.get(header)
                     if v:
@@ -60,7 +61,8 @@ class ProxyHandler(tornado.web.RequestHandler):
                     self.write(response.body)
                 self.finish()
 
-        req = tornado.httpclient.HTTPRequest(url=self.request.uri,
+        req = tornado.httpclient.HTTPRequest(
+            url=self.request.uri,
             method=self.request.method, body=self.request.body,
             headers=self.request.headers, follow_redirects=False,
             allow_nonstandard_methods=True)

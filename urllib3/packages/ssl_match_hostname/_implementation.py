@@ -7,6 +7,7 @@ import re
 
 __version__ = '3.4.0.2'
 
+
 class CertificateError(ValueError):
     pass
 
@@ -93,13 +94,16 @@ def match_hostname(cert, hostname):
                         return
                     dnsnames.append(value)
     if len(dnsnames) > 1:
-        raise CertificateError("hostname %r "
+        raise CertificateError(
+            "hostname %r "
             "doesn't match either of %s"
             % (hostname, ', '.join(map(repr, dnsnames))))
     elif len(dnsnames) == 1:
-        raise CertificateError("hostname %r "
+        raise CertificateError(
+            "hostname %r "
             "doesn't match %r"
             % (hostname, dnsnames[0]))
     else:
-        raise CertificateError("no appropriate commonName or "
+        raise CertificateError(
+            "no appropriate commonName or "
             "subjectAltName fields were found")

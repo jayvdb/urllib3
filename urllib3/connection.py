@@ -11,14 +11,7 @@ try:  # Python 3
 except ImportError:
     from httplib import HTTPConnection as _HTTPConnection, HTTPException
 
-
-class DummyConnection(object):
-    "Used to detect a failed ConnectionCls import."
-    pass
-
-
 try:  # Compiled with SSL?
-    HTTPSConnection = DummyConnection
     import ssl
     BaseSSLError = ssl.SSLError
 except (ImportError, AttributeError):  # Platform-specific: No SSL.
@@ -60,6 +53,14 @@ port_by_scheme = {
 }
 
 RECENT_DATE = datetime.date(2014, 1, 1)
+
+
+class DummyConnection(object):
+    "Used to detect a failed ConnectionCls import."
+    pass
+
+
+HTTPSConnection = DummyConnection
 
 
 class HTTPConnection(_HTTPConnection, object):
@@ -266,8 +267,8 @@ class VerifiedHTTPSConnection(HTTPSConnection):
                 )
             match_hostname(cert, self.assert_hostname or hostname)
 
-        self.is_verified = (resolved_cert_reqs == ssl.CERT_REQUIRED
-                            or self.assert_fingerprint is not None)
+        self.is_verified = (resolved_cert_reqs == ssl.CERT_REQUIRED or
+                            self.assert_fingerprint is not None)
 
 
 if ssl:

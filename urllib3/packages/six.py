@@ -1,23 +1,23 @@
 """Utilities for writing code that runs on Python 2 and 3"""
 
-#Copyright (c) 2010-2011 Benjamin Peterson
+# Copyright (c) 2010-2011 Benjamin Peterson
 
-#Permission is hereby granted, free of charge, to any person obtaining a copy of
-#this software and associated documentation files (the "Software"), to deal in
-#the Software without restriction, including without limitation the rights to
-#use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-#the Software, and to permit persons to whom the Software is furnished to do so,
-#subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
 
-#The above copyright notice and this permission notice shall be included in all
-#copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-#FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-#COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-#IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-#CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import operator
 import sys
@@ -126,7 +126,6 @@ class MovedAttribute(_LazyDescr):
     def _resolve(self):
         module = _import_module(self.mod)
         return getattr(module, self.attr)
-
 
 
 class _MovedItems(types.ModuleType):
@@ -264,9 +263,11 @@ def iterkeys(d):
     """Return an iterator over the keys of a dictionary."""
     return iter(getattr(d, _iterkeys)())
 
+
 def itervalues(d):
     """Return an iterator over the values of a dictionary."""
     return iter(getattr(d, _itervalues)())
+
 
 def iteritems(d):
     """Return an iterator over the (key, value) pairs of a dictionary."""
@@ -276,8 +277,10 @@ def iteritems(d):
 if PY3:
     def b(s):
         return s.encode("latin-1")
+
     def u(s):
         return s
+
     if sys.version_info[1] <= 1:
         def int2byte(i):
             return bytes((i,))
@@ -290,8 +293,10 @@ if PY3:
 else:
     def b(s):
         return s
+
     def u(s):
         return unicode(s, "unicode_escape")
+
     int2byte = chr
     import StringIO
     StringIO = BytesIO = StringIO.StringIO
@@ -303,12 +308,10 @@ if PY3:
     import builtins
     exec_ = getattr(builtins, "exec")
 
-
     def reraise(tp, value, tb=None):
         if value.__traceback__ is not tb:
             raise value.with_traceback(tb)
         raise value
-
 
     print_ = getattr(builtins, "print")
     del builtins
@@ -326,21 +329,21 @@ else:
             locs = globs
         exec("""exec code in globs, locs""")
 
-
     exec_("""def reraise(tp, value, tb=None):
     raise tp, value, tb
 """)
-
 
     def print_(*args, **kwargs):
         """The new-style print function."""
         fp = kwargs.pop("file", sys.stdout)
         if fp is None:
             return
+
         def write(data):
             if not isinstance(data, basestring):
                 data = str(data)
             fp.write(data)
+
         want_unicode = False
         sep = kwargs.pop("sep", None)
         if sep is not None:
